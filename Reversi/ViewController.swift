@@ -298,7 +298,11 @@ extension ViewController {
     /// "Computer" が選択されている場合のプレイヤーの行動を決定します。
     func playTurnOfComputer() {
         guard let turn = self.turn else { preconditionFailure() }
-        let (x, y) = validMoves(for: turn).randomElement()!
+        /// 初期表示時に手詰まりしていた場合に必ずクラッシュしていたのでハンドリング
+        guard let (x, y) = validMoves(for: turn).randomElement() else {
+            nextTurn()
+            return
+        }
 
         playerActivityIndicators[turn.index].startAnimating()
         
